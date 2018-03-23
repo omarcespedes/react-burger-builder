@@ -1,0 +1,32 @@
+.side-drawer {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    align-items: center;
+    background-color: white;
+    height: 100%;
+    width: 35%;
+    left: 0;
+    top: 0;
+    transition: 0.3 s ease-out;
+    z-index: 200;
+}
+
+.side-drawer .logo-drawer {
+    height: 70px;
+    margin-bottom: 42px;
+}
+
+.side-drawer.open {
+    transform: translateX(0);
+}
+
+.side-drawer.close {
+    transform: translateX(-100%);
+}
+
+@media (min-width: 600px) {
+    .side-drawer {
+        display: none;
+    }
+}

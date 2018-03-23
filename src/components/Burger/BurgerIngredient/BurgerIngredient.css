@@ -1,0 +1,29 @@
+.ingredient {
+    width: 90%;
+    height: 10px;
+    border: 5px solid white;
+}
+
+.ham {
+    background-color: pink;
+}
+
+.lettuce {
+    background-color: lightgreen;
+}
+
+.chesse {
+    background-color: yellow;
+}
+
+.bread-top {
+    background-color: brown;
+}
+
+.bread-bottom {
+    background-color: brown;
+}
+
+.meat {
+    background-color: #a74504;
+}

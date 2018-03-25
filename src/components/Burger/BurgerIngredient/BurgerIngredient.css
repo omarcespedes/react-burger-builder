@@ -1,7 +1,10 @@
 .ingredient {
     width: 90%;
-    height: 10px;
+    height: 15px;
     border: 5px solid white;
+    border-radius: 30px;
+    padding: 5px 0;
+    margin: 0 auto;
 }
 
 .ham {
@@ -17,11 +20,17 @@
 }
 
 .bread-top {
-    background-color: brown;
+    background: linear-gradient(#bc581e, #e27b36);
+    border-radius: 50% 50% 0 0;
+    height: 40px;
+    box-shadow: inset -15px 0 #c15711;
 }
 
 .bread-bottom {
-    background-color: brown;
+    background: linear-gradient(#F08E4A, #e27b36);
+    box-shadow: inset -15px 0 #c15711;
+    height: 25px;
+    border-radius: 0 0 15px 15px;
 }
 
 .meat {

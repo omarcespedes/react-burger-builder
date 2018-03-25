@@ -19,7 +19,7 @@ const Burger = (props) => {
 
     return (
         <div className="burger">
-            <h3>Burger </h3>
+            <h3 style={{textAlign: 'center'}}>Burger </h3>
             <BurgerIngredient type="breadTop" disableDragging={true} />
             {content}
             <BurgerIngredient type="breadBottom" disableDragging={true} />

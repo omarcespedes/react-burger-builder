@@ -5,7 +5,7 @@ import './DraggableIngredients.css';
 
 const draggableIngredients = (props) => (
     <div className="draggable-ingredients">
-        <h3>Ingredients </h3>
+        <h3 style={{textAlign: 'center'}}>Ingredients </h3>
         {props.ingredients.map((ingredient, i) => (
             <BurgerIngredient
                 index={props.listCount}

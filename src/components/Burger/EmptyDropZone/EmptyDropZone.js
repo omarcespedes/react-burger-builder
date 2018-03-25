@@ -6,7 +6,9 @@ const styles = {
     height: '30px',
     textAlign: 'center',
     padding: '15px',
-    border: '1px solid black'
+    border: '1px solid black',
+    borderStyle: 'dashed',
+    margin: '0 auto'
 }
 
 const ingredientTarget = {
@@ -20,7 +22,7 @@ let emptyDropZone = (props) => {
 
     return connectDropTarget(
         <div style={styles}>
-            { isOver? '' : 'Start Dropping here'}
+            { isOver? '' : 'Start dropping here'}
         </div>
     )
 }

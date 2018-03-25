@@ -117,8 +117,8 @@ class BurgerBuilder extends Component {
                     />
                 </div>
                 <div className="burger-controls">
-                    <p> Total Price: {this.state.totalPrice} </p>
-                    <button onClick={this.purchaseOrder}>Order Now</button>
+                    <p> <b>Total Price:</b> {this.state.totalPrice.toFixed(2)} </p>
+                    <button className="order-btn" onClick={this.purchaseOrder}>Order Now</button>
                 </div>
             </Fragment>
         );

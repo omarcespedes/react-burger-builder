@@ -85,50 +85,60 @@ const ingredientTarget = {
 	},
 }
 
-let BurgerIngredient = (props) => {
-	let ingredientClass = '';
-	switch (props.type) {
-		case 'ham':
-			ingredientClass = 'ham';
-			break;
-		case 'lettuce':
-			ingredientClass = 'lettuce';
-			break;
-		case 'chesse':
-			ingredientClass = 'chesse';
-			break;
-		case 'breadTop':
-			ingredientClass = 'bread-top';
-			break;
-		case 'meat':
-			ingredientClass = 'meat';
-			break;
-		case 'breadBottom':
-			ingredientClass = 'bread-bottom';
-			break;
-		default:
-			ingredientClass = '';
+export default (draggable) => {
+	// eslint-disable-next-line
+	let BurgerIngredient = (props) => {
+		let ingredientClass = '';
+		switch (props.type) {
+			case 'ham':
+				ingredientClass = 'ham';
+				break;
+			case 'lettuce':
+				ingredientClass = 'lettuce';
+				break;
+			case 'chesse':
+				ingredientClass = 'chesse';
+				break;
+			case 'breadTop':
+				ingredientClass = 'bread-top';
+				break;
+			case 'meat':
+				ingredientClass = 'meat';
+				break;
+			case 'breadBottom':
+				ingredientClass = 'bread-bottom';
+				break;
+			default:
+				ingredientClass = '';
+		}
+	
+		const {
+			isDragging,
+			connectDragSource,
+			connectDropTarget,
+		} = props
+		const opacity = isDragging ? 0 : 1
+		const content = <div style={{ ...opacity }} className={'ingredient ' + ingredientClass}></div>;
+
+		if( draggable ) {
+			return connectDragSource(
+				connectDropTarget(content)
+			);
+		} else {
+			return content;
+		}		
 	}
 
-	const {
-		isDragging,
-		connectDragSource,
-		connectDropTarget,
-	} = props
-	const opacity = isDragging ? 0 : 1
+	if (draggable) {
+		BurgerIngredient = DragSource('card', ingredientSource, (connect, monitor) => ({
+			connectDragSource: connect.dragSource(),
+			isDragging: monitor.isDragging(),
+		}))(BurgerIngredient);
+		
+		BurgerIngredient = DropTarget('card', ingredientTarget, connect => ({
+			connectDropTarget: connect.dropTarget(),
+		}))(BurgerIngredient);
+	}
 
-	return connectDragSource(
-		connectDropTarget(<div style={{ ...opacity }} className={'ingredient ' + ingredientClass}></div>),
-	);
-}
-
-BurgerIngredient = DragSource('card', ingredientSource, (connect, monitor) => ({
-	connectDragSource: connect.dragSource(),
-	isDragging: monitor.isDragging(),
-}))(BurgerIngredient);
-
-BurgerIngredient = DropTarget('card', ingredientTarget, connect => ({
-	connectDropTarget: connect.dropTarget(),
-}))(BurgerIngredient);
-
-export default BurgerIngredient;
+	return BurgerIngredient;
+};

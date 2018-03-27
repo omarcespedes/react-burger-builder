@@ -58,7 +58,12 @@ class BurgerBuilder extends Component {
     }
 
     continueOrder = () => {
-        alert('continue order');
+        this.props.history.push({
+            pathname: '/checkout',
+            state: {
+                ingredients: this.state.selectedIngredients
+            }
+        });
     }
 
     moveIngredient = (dragIndex, hoverIndex, config) => {
@@ -105,6 +110,7 @@ class BurgerBuilder extends Component {
                 </Modal>
                 <div className="burger-container">
                     <Burger
+                        drag
                         ingredients={this.state.selectedIngredients}
                         moveIngredient={this.moveIngredient}
                         removeIngredient={this.removeIngredient}

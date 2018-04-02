@@ -6,6 +6,7 @@ import DraggableIngredients from '../../components/Burger/DraggableIngredients/D
 import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary';
 import './BurgerBuilder.css';
 import Modal from '../../components/UI/Modal/Modal';
+import axios from '../../burger-axios';
 
 
 const Fragment = React.Fragment;
@@ -16,23 +17,28 @@ class BurgerBuilder extends Component {
         super(props);
 
         this.state = {
-            ingredients: [{
-                type: 'lettuce',
-                price: 0.5
-            }, {
-                type: 'ham',
-                price: 0.7
-            }, {
-                type: 'chesse',
-                price: 0.5
-            }, {
-                type: 'meat',
-                price: 1.5
-            }],
+            ingredients: [],
             selectedIngredients: [],
             totalPrice: 3,
             purchasing: false
         };
+    }
+
+    componentWillMount() {
+        axios.get('/ingredients.json').then( response => {
+            let ingredients = [];
+            for (let ingredientName in response.data) {
+                ingredients.push({
+                    type: ingredientName,
+                    price: response.data[ingredientName]
+                })
+            }
+            this.setState({
+                ingredients: ingredients
+            })
+        }).catch(()=> {
+            console.log('something went wrong')
+        })
     }
 
     removeIngredient = (index) => {
@@ -123,7 +129,7 @@ class BurgerBuilder extends Component {
                     />
                 </div>
                 <div className="burger-controls">
-                    <p> <b>Total Price:</b> {this.state.totalPrice.toFixed(2)} </p>
+                    <p> <b>Total Price:</b> {this.state.totalPrice.toFixed(2)} Bs. </p>
                     <button className="order-btn" onClick={this.purchaseOrder}>Order Now</button>
                 </div>
             </Fragment>

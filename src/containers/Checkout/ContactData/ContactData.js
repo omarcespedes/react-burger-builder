@@ -18,7 +18,8 @@ class ContactData extends Component {
                     <input type="text" placeholder="Enter your name" />
                     <input type="text" placeholder="Enter your last name" />
                     <input type="text" placeholder="Enter your street" />
-                    <input type="text" placeholder="Enter your zipcode" />                    
+                    <input type="text" placeholder="Enter your zipcode" />     
+                    <button onClick={this.props.orderClicked}> Order </button>               
                 </form>
             </div>
         )

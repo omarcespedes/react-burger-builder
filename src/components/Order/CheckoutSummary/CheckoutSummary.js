@@ -11,7 +11,7 @@ const checkoutSummary = (props) => (
             <button onClick={props.cancelClicked}> Cancel </button>
             <button onClick={props.continueClicked}> Continue </button>
         </div>
-        <Route path={props.match.url + '/contact-data'} component={ContactData} />
+        <Route path={props.match.url + '/contact-data'} render={() => <ContactData orderClicked={props.orderClicked} />} />
     </div>
 );
 

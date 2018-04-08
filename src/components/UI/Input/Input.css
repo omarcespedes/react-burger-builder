@@ -1,0 +1,30 @@
+.input-element {
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+.input-label {
+    display: block;
+    font-weight: bold;
+    padding: 3px;
+}
+
+.input {
+    padding: 6px 10px;
+    box-sizing: border-box;
+    font: inherit;
+    width: 100%;
+    display: block;
+    outline: none;
+}
+
+.invalid {
+    color: red;
+    background-color: salmon;
+}
+
+.input:focus {
+    outline: none;
+    border: 1px solid lightblue;
+}

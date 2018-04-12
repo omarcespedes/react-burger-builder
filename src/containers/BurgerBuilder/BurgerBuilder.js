@@ -7,6 +7,7 @@ import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary';
 import './BurgerBuilder.css';
 import Modal from '../../components/UI/Modal/Modal';
 import axios from '../../burger-axios';
+import * as actionTypes from '../../store/actions';
 
 
 const Fragment = React.Fragment;
@@ -134,6 +135,21 @@ class BurgerBuilder extends Component {
                 </div>
             </Fragment>
         );
+    }
+}
+
+const mapStateToProps = state => {
+    return {
+        ings: state.ingredients,
+        selIngs: state.selectedIngredients
+    }
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+        onAddIngredient: (ing) => dispatch({type: actionTypes.ADD_INGREDIENT, ingredient: ing}),
+        onRemoveIngredient: () => dispatch({type: actionTypes.REMOVE_INGREDIENT}),
+        onMoveIngredient: () => dispatch({type: actionTypes.MOVE_INGREDIENT})
     }
 }
 

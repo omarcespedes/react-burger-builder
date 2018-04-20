@@ -6,8 +6,8 @@ import DraggableIngredients from '../../components/Burger/DraggableIngredients/D
 import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary';
 import './BurgerBuilder.css';
 import Modal from '../../components/UI/Modal/Modal';
-import axios from '../../burger-axios';
-import * as actionTypes from '../../store/actions';
+import * as actions from '../../store/actions';
+import { connect } from 'react-redux';
 
 
 const Fragment = React.Fragment;
@@ -18,40 +18,13 @@ class BurgerBuilder extends Component {
         super(props);
 
         this.state = {
-            ingredients: [],
-            selectedIngredients: [],
             totalPrice: 3,
             purchasing: false
         };
     }
 
-    componentWillMount() {
-        axios.get('/ingredients.json').then( response => {
-            let ingredients = [];
-            for (let ingredientName in response.data) {
-                ingredients.push({
-                    type: ingredientName,
-                    price: response.data[ingredientName]
-                })
-            }
-            this.setState({
-                ingredients: ingredients
-            })
-        }).catch(()=> {
-            console.log('something went wrong')
-        })
-    }
-
-    removeIngredient = (index) => {
-        const newIngredients = [...this.state.selectedIngredients];
-        const oldPrice = this.state.totalPrice;
-        let newPrice = oldPrice - newIngredients[index].price;
-
-        newIngredients.splice(index, 1);
-        this.setState({
-            selectedIngredients: newIngredients,
-            totalPrice: newPrice
-        })
+    componentDidMount() {
+        this.props.initIngredients();
     }
 
     purchaseOrder = () => {
@@ -66,44 +39,9 @@ class BurgerBuilder extends Component {
 
     continueOrder = () => {
         this.props.history.push({
-            pathname: '/checkout',
-            state: {
-                ingredients: this.state.selectedIngredients
-            }
+            pathname: '/checkout'
         });
-    }
 
-    moveIngredient = (dragIndex, hoverIndex, config) => {
-        const totalPrice = this.state.totalPrice;
-        const { selectedIngredients } = this.state;
-        let dragIngredient = selectedIngredients[dragIndex];
-        let newPrice = totalPrice;
-
-        const newIngredients = [...this.state.selectedIngredients];
-
-        if (newIngredients.length === dragIndex) {
-            dragIngredient = config;
-            newPrice = totalPrice + config.price;
-        } else {
-            newIngredients.splice(dragIndex, 1);
-        }
-
-        newIngredients.splice(hoverIndex, 0, dragIngredient);
-
-        this.setState({
-            selectedIngredients: newIngredients,
-            totalPrice: newPrice
-        });
-    }
-
-    addIngredient = (config) => {
-        const newIngredients = [...this.state.selectedIngredients];
-        newIngredients.push(config);
-
-        this.setState({
-            selectedIngredients: newIngredients,
-            totalPrice: this.state.totalPrice + config.price
-        })
     }
 
     render() {
@@ -113,24 +51,24 @@ class BurgerBuilder extends Component {
                     <OrderSummary
                         continueOrder={this.continueOrder}
                         cancelOrder={this.cancelOrder}
-                        ingredients={this.state.selectedIngredients} />
+                        ingredients={this.props.selIngs} />
                 </Modal>
                 <div className="burger-container">
                     <Burger
                         drag
-                        ingredients={this.state.selectedIngredients}
-                        moveIngredient={this.moveIngredient}
-                        removeIngredient={this.removeIngredient}
+                        ingredients={this.props.selIngs}
+                        moveIngredient={this.props.onMoveIngredient}
+                        removeIngredient={this.props.onRemoveIngredient}
                     />
                     <DraggableIngredients
-                        ingredients={this.state.ingredients}
-                        listCount={this.state.selectedIngredients.length}
-                        removeIngredient={this.removeIngredient}
-                        addIngredient={this.addIngredient}
+                        ingredients={this.props.ings}
+                        listCount={this.props.selIngs.length}
+                        removeIngredient={this.props.onRemoveIngredient}
+                        addIngredient={this.props.onAddIngredient}
                     />
                 </div>
                 <div className="burger-controls">
-                    <p> <b>Total Price:</b> {this.state.totalPrice.toFixed(2)} Bs. </p>
+                    <p> <b>Total Price:</b> {this.props.price.toFixed(2)} Bs. </p>
                     <button className="order-btn" onClick={this.purchaseOrder}>Order Now</button>
                 </div>
             </Fragment>
@@ -140,17 +78,20 @@ class BurgerBuilder extends Component {
 
 const mapStateToProps = state => {
     return {
-        ings: state.ingredients,
-        selIngs: state.selectedIngredients
+        ings: state.burgerBuilder.ingredients,
+        selIngs: state.burgerBuilder.selectedIngredients,
+        price: state.burgerBuilder.totalPrice
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        onAddIngredient: (ing) => dispatch({type: actionTypes.ADD_INGREDIENT, ingredient: ing}),
-        onRemoveIngredient: () => dispatch({type: actionTypes.REMOVE_INGREDIENT}),
-        onMoveIngredient: () => dispatch({type: actionTypes.MOVE_INGREDIENT})
+        onAddIngredient: (ing) => dispatch(actions.addIngredient(ing)),
+        onRemoveIngredient: (index) => dispatch(actions.removeIngredient(index)),
+        onMoveIngredient: (dragIndex, hoverIndex, config) => dispatch(actions.moveIngredient(dragIndex, hoverIndex, config)),
+        initIngredients: () => dispatch(actions.initIngredients()),
+        initPurchase: () => dispatch(actions.purchaseBurgerInit())
     }
 }
 
-export default DragDropContext(HTML5Backend)(BurgerBuilder);
+export default connect(mapStateToProps, mapDispatchToProps)(DragDropContext(HTML5Backend)(BurgerBuilder));

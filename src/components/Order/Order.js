@@ -1,4 +1,5 @@
 import React from 'react';
+import './Order.css';
 
 const order = (props) => {
     const ingredients = {};
@@ -13,7 +14,7 @@ const order = (props) => {
     });
     
     return (
-        <div>
+        <div className="order">
             <span> Ingredients </span>
             <ul>
                 {ingredientList}         

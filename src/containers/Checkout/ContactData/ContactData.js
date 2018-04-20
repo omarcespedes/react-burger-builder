@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Input from '../../../components/UI/Input/Input';
-import axios from '../../../burger-axios';
+import { connect } from 'react-redux';
+import * as orderActions from '../../../store/actions';
 
 class ContactData extends Component {
     state = {
@@ -56,13 +57,12 @@ class ContactData extends Component {
                 },
                 validation: {},
                 value: 'fastest',
-                valid: false,
+                valid: true,
                 touched: false
             }
         },
         formIsValid: false
     }
-
 
     checkValidity = (elementId, value) => {
         let isValid = true;
@@ -111,7 +111,7 @@ class ContactData extends Component {
             order: orderData
         }
 
-        axios.post("/orders.json", payload);
+        this.props.onSubmitOrder(payload);
     }
 
     render() {
@@ -145,4 +145,16 @@ class ContactData extends Component {
     }
 }
 
-export default ContactData;
+const mapStateToProps = state => {
+    return {
+        ingredients: state.burgerBuilder.selectedIngredients
+    }
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+        onSubmitOrder: (orderData) => dispatch(orderActions.purchaseOrder(orderData))
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ContactData);
